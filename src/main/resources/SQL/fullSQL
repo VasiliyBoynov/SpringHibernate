@@ -1,0 +1,68 @@
+create table user_security
+(
+    ID long auto_increment,
+    login VARCHAR not null,
+    password varchar not null,
+    email varchar not null,
+    constraint USER_SECURITY_PK
+        primary key (id)
+);
+
+insert into user_security (login, password, email) values
+( 'admin','admin','admin@ya.ru' ),
+( 'user1','dbaadeb','user1@ya.ru' ),
+( 'user2','WREGVFw','user2@ya.ru' );
+
+
+create table user
+(
+    ID long auto_increment,
+    name varchar not null,
+    surname varchar,
+    sex boolean,
+    age int,
+    security long,
+    constraint USER_PK
+        primary key (ID),
+    FOREIGN KEY (security) REFERENCES user_security (id)
+);
+
+insert into user (name, surname, sex, age, security) VALUES
+('Администратор','',true,2021,1 ),
+('Иван','Иванов',true,21,2),
+('Анна','Забельман',false,18,2);
+
+create table product
+(
+    id bigint auto_increment,
+    title varchar not null ,
+    cost float not null,
+    constraint PRODUCT_PK
+        primary key (id)
+);
+insert into product (title, cost) values
+('хлеб',125.3 ),
+('молоко',12.1),
+('box',321),
+('вода',123.4 );
+
+create table cart
+(
+    id bigint auto_increment,
+    user_id bigint not null,
+    product_id bigint not null,
+    constraint CART_PK
+        primary key (id),
+    constraint CART_USER_ID_FK
+        foreign key (user_id) references USER (ID),
+    foreign key (product_id) references product (ID)
+);
+
+insert into cart (user_id, product_id)
+values ( 1,1 ),
+       (1,3),
+       (1,4),
+       (2,2),
+       (2,3),
+       (3,3),
+       (3,1);
